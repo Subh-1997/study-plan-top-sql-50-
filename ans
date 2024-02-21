@@ -400,5 +400,29 @@ Register table:
 | 210        | 7       |
 +------------+---------+
 
-Ans.
+Ans.select contest_id,round (count(distinct user_id)*100/(select count(user_id) from users),2) as percentage from register group by contest_id order by percentage desc,contest_id
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+19. Queries Quality and Percentage
+
+Input: 
+Queries table:
++------------+-------------------+----------+--------+
+| query_name | result            | position | rating |
++------------+-------------------+----------+--------+
+| Dog        | Golden Retriever  | 1        | 5      |
+| Dog        | German Shepherd   | 2        | 5      |
+| Dog        | Mule              | 200      | 1      |
+| Cat        | Shirazi           | 5        | 2      |
+| Cat        | Siamese           | 3        | 3      |
+| Cat        | Sphynx            | 7        | 4      |
++------------+-------------------+----------+--------+
+Ans.select query_name ,round(sum(rating/position )/count(query_name ),2) as quality, 
+round(sum(case when rating < 3 then 1 else 0 end)/count(query_name)*100,2)as poor_query_percentage 
+from Queries group by query_name 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+20.Monthly Transactions I
+
+select substr(trans_date,1,7) as month,country, count(id) as trans_count,sum(case when state='approved' then 1 else 0 end) as approved_count,sum(amount) as trans_total_amount,
+sum(case when state='approved' then amount else 0 end) as approved_total_amount
+from Transactions group by month,country
